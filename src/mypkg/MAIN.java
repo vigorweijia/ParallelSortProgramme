@@ -25,7 +25,14 @@ public class MAIN {
             System.out.print(" ");
         }
         System.out.println();*/
-        ParallelMergeSort.parallelMergeSort(arry, 0, 14);
+        /*ParallelMergeSort.parallelMergeSort(arry, 0, 14);
+        for(int each : arry)
+        {
+            System.out.print(each);
+            System.out.print(" ");
+        }
+        System.out.println();*/
+        ParallelQuickSort.parallelQuickSort(arry, 0, 14);
         for(int each : arry)
         {
             System.out.print(each);

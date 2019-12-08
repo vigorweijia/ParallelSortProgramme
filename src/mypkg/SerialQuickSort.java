@@ -1,7 +1,7 @@
 package mypkg;
 
 public class SerialQuickSort {
-    private static int partion(int[] arry, int l, int r)
+    public static int partion(int[] arry, int l, int r)
     {
         int pivot = arry[r];
         int j = l-1;
