@@ -1,5 +1,7 @@
 package mypkg;
 
+import java.util.concurrent.CountDownLatch;
+
 public class ParallelQuickSort {
 
     private static int aliveProcess;
@@ -9,17 +11,24 @@ public class ParallelQuickSort {
     private static void quickSort(int[] arry, int l,int r, int depthLimit, int depth)
     {
         if(l >= r) return;
-        int x = SerialQuickSort.partion(arry, l, r);
         if(depth < depthLimit)
         {
-            aliveProcess += 2;
-            new SortThread(arry, l, x, depthLimit, depth+1).start();
-            new SortThread(arry, x+1, r, depthLimit, depth+1).start();
+            CountDownLatch countDownLatch = new CountDownLatch(2);
+            int mid = (l+r)/2;
+            new SortThread(arry, l, mid, depthLimit, depth+1, countDownLatch).start();
+            new SortThread(arry, mid+1, r, depthLimit, depth+1, countDownLatch).start();
+            try {
+                countDownLatch.await();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            SerialMergeSort.merge(arry, l, r, mid);
         }
         else
         {
-            SerialQuickSort.serialQuickSort(arry, l, x);
-            SerialQuickSort.serialQuickSort(arry, x+1, r);
+            SerialQuickSort.serialQuickSort(arry, l, r);
         }
     }
 
@@ -30,22 +39,23 @@ public class ParallelQuickSort {
         private int r;
         private int depthLimit;
         private int depth;
+        private CountDownLatch countDownLatch;
 
-
-        public SortThread(int[] arry, int l, int r ,int depthLimit, int depth)
+        public SortThread(int[] arry, int l, int r ,int depthLimit, int depth, CountDownLatch countDownLatch)
         {
             this.arry = arry;
             this.l = l;
             this.r = r;
             this.depthLimit = depthLimit;
             this.depth = depth;
+            this.countDownLatch = countDownLatch;
         }
 
         @Override
         public void run()
         {
             quickSort(arry, l, r, depth, depthLimit);
-            aliveProcess--;
+            countDownLatch.countDown();
         }
     }
 
@@ -55,6 +65,5 @@ public class ParallelQuickSort {
             quickSort(arry, l, r, maxParallelDepth, 1);
         else
             quickSort(arry, l, r, 1, 1);
-        while(aliveProcess > 0);
     }
 }

@@ -32,7 +32,14 @@ public class MAIN {
             System.out.print(" ");
         }
         System.out.println();*/
-        ParallelQuickSort.parallelQuickSort(arry, 0, 14);
+        /*ParallelQuickSort.parallelQuickSort(arry, 0, 14);
+        for(int each : arry)
+        {
+            System.out.print(each);
+            System.out.print(" ");
+        }
+        System.out.println();*/
+        ParallelEnumerationSort.parallelEnumerationSort(arry, 0, 14);
         for(int each : arry)
         {
             System.out.print(each);
