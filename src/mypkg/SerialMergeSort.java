@@ -1,7 +1,7 @@
 package mypkg;
 
 public class SerialMergeSort {
-    private static void merge(int[] arry, int l, int r, int mid)
+    public static void merge(int[] arry, int l, int r, int mid)
     {
         int[] A = new int[mid-l+1];
         int[] B = new int[r-mid];
