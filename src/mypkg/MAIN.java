@@ -1,50 +1,72 @@
 package mypkg;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class MAIN {
+    private static int[] nums;
+
+    private static void readFromFile(String fileName) throws FileNotFoundException
+    {
+        nums = new int[30000];
+        File file = new File(fileName);
+        if(!file.exists())
+        {
+            System.out.println("File not exist");
+            System.exit(0);
+        }
+        Scanner scanner = new Scanner(file);
+        int i = 0;
+        while (scanner.hasNext())
+        {
+            nums[i++] = scanner.nextInt();
+        }
+        scanner.close();
+        return;
+    }
+
     public static void main(String[] args)
     {
-        int[] arry = {1,8,2,7,6,3,5,4,1,5,11,-2,9,5,1};
-        /*SerialQuickSort.serialQuickSort(arry,0,14);
-        for(int each : arry)
-        {
-            System.out.print(each);
-            System.out.print(" ");
+        try{
+            readFromFile("random.txt");
         }
-        System.out.println();
-        SerialMergeSort.serialMergeSort(arry, 0, 14);
-        for(int each : arry)
+        catch (FileNotFoundException e)
         {
-            System.out.print(each);
-            System.out.print(" ");
+            e.printStackTrace();
         }
-        System.out.println();
-        SerialEnumerationSort.serialEnumerationSort(arry, 0, 14);
-        for(int each : arry)
-        {
-            System.out.print(each);
-            System.out.print(" ");
-        }
-        System.out.println();*/
-        /*ParallelMergeSort.parallelMergeSort(arry, 0, 14);
-        for(int each : arry)
-        {
-            System.out.print(each);
-            System.out.print(" ");
-        }
-        System.out.println();*/
-        /*ParallelQuickSort.parallelQuickSort(arry, 0, 14);
-        for(int each : arry)
-        {
-            System.out.print(each);
-            System.out.print(" ");
-        }
-        System.out.println();*/
-        ParallelEnumerationSort.parallelEnumerationSort(arry, 0, 14);
-        for(int each : arry)
-        {
-            System.out.print(each);
-            System.out.print(" ");
-        }
-        System.out.println();
+
+        int lenth = nums.length;
+        double startTime, endTime;
+
+        startTime = System.currentTimeMillis();
+        SerialQuickSort.serialQuickSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Serial Quick Sort: " + (startTime-endTime));
+
+        startTime = System.currentTimeMillis();
+        SerialMergeSort.serialMergeSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Serial Merge Sort: " + (startTime-endTime));
+
+        startTime = System.currentTimeMillis();
+        SerialEnumerationSort.serialEnumerationSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Serial Enumeration Sort: " + (startTime-endTime));
+
+        startTime = System.currentTimeMillis();
+        ParallelQuickSort.parallelQuickSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Quick Sort: " + (startTime-endTime));
+
+        startTime = System.currentTimeMillis();
+        ParallelMergeSort.parallelMergeSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Merge Sort: " + (startTime-endTime));
+
+        startTime = System.currentTimeMillis();
+        ParallelEnumerationSort.parallelEnumerationSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Enumeration Sort: " + (startTime-endTime));
     }
 }
