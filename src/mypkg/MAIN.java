@@ -1,15 +1,16 @@
 package mypkg;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class MAIN {
     private static int[] nums;
-
+    private static int[] backup;
+    private static final int lenth = 30000;
     private static void readFromFile(String fileName) throws FileNotFoundException
     {
-        nums = new int[30000];
+        nums = new int[lenth];
+        backup = new int[lenth];
         File file = new File(fileName);
         if(!file.exists())
         {
@@ -20,53 +21,88 @@ public class MAIN {
         int i = 0;
         while (scanner.hasNext())
         {
-            nums[i++] = scanner.nextInt();
+            backup[i++] = scanner.nextInt();
         }
         scanner.close();
         return;
     }
 
+    private static void returnBack()
+    {
+        for(int i = 0; i < lenth; i++) nums[i] = backup[i];
+    }
+
+    private static void writeToFile(String fileName)
+    {
+        try {
+            File file = new File(fileName);
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for(int i = 0; i < lenth; i++) bufferedWriter.write(nums[i] + " ");
+            bufferedWriter.write("\n");
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args)
     {
         try{
-            readFromFile("random.txt");
+            readFromFile("src/mypkg/random.txt");
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
 
-        int lenth = nums.length;
         double startTime, endTime;
 
+        returnBack();
         startTime = System.currentTimeMillis();
         SerialQuickSort.serialQuickSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Serial Quick Sort: " + (startTime-endTime));
+        System.out.println("Serial Quick Sort: " + (endTime-startTime));
+        writeToFile("output1.txt");
 
+        returnBack();
         startTime = System.currentTimeMillis();
         SerialMergeSort.serialMergeSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Serial Merge Sort: " + (startTime-endTime));
+        System.out.println("Serial Merge Sort: " + (endTime-startTime));
+        writeToFile("output2.txt");
 
+        returnBack();
         startTime = System.currentTimeMillis();
         SerialEnumerationSort.serialEnumerationSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Serial Enumeration Sort: " + (startTime-endTime));
+        System.out.println("Serial Enumeration Sort: " + (endTime-startTime));
+        writeToFile("output3.txt");
 
+        returnBack();
         startTime = System.currentTimeMillis();
         ParallelQuickSort.parallelQuickSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Parallel Quick Sort: " + (startTime-endTime));
+        System.out.println("Parallel Quick Sort: " + (endTime-startTime));
+        writeToFile("output4.txt");
 
+        returnBack();
         startTime = System.currentTimeMillis();
         ParallelMergeSort.parallelMergeSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Parallel Merge Sort: " + (startTime-endTime));
+        System.out.println("Parallel Merge Sort: " + (endTime-startTime));
+        writeToFile("output5.txt");
 
+        returnBack();
         startTime = System.currentTimeMillis();
         ParallelEnumerationSort.parallelEnumerationSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Parallel Enumeration Sort: " + (startTime-endTime));
+        System.out.println("Parallel Enumeration Sort: " + (endTime-startTime));
+        writeToFile("output6.txt");
     }
 }
