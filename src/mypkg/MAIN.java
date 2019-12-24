@@ -40,6 +40,8 @@ public class MAIN {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for(int i = 0; i < lenth; i++) bufferedWriter.write(nums[i] + " ");
             bufferedWriter.write("\n");
+            bufferedWriter.close();
+            fileWriter.close();
         }
         catch (FileNotFoundException e)
         {
@@ -53,6 +55,8 @@ public class MAIN {
 
     public static void main(String[] args)
     {
+        GenerateRandom.generateRandom(10000);
+
         try{
             readFromFile("src/mypkg/random.txt");
         }
@@ -104,5 +108,12 @@ public class MAIN {
         endTime = System.currentTimeMillis();
         System.out.println("Parallel Enumeration Sort: " + (endTime-startTime));
         writeToFile("output6.txt");
+
+        /*returnBack();
+        startTime = System.currentTimeMillis();
+        PooledParallelQuickSort.pooledParallelQuickSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel QuickSort using Thread Pool: " + (endTime-startTime));
+        writeToFile("output7.txt");*/
     }
 }
