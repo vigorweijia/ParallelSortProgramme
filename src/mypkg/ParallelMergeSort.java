@@ -61,6 +61,7 @@ public class ParallelMergeSort {
 
     public static void parallelMergeSort(int[] arry, int l, int r)
     {
+        System.out.println("Parallel merge sort available processors:"+Runtime.getRuntime().availableProcessors());
         if(maxParallelDepth >= 1)
             mergeSortParallel(arry, l, r, maxParallelDepth, 1);
         else

@@ -61,6 +61,7 @@ public class ParallelQuickSort {
 
     public static void parallelQuickSort(int[] arry, int l, int r)
     {
+        System.out.println("Parallel quick sort available processors:" + Runtime.getRuntime().availableProcessors());
         if(maxParallelDepth >= 1)
             quickSort(arry, l, r, maxParallelDepth, 1);
         else

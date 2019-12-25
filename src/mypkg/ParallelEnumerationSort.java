@@ -10,6 +10,9 @@ public class ParallelEnumerationSort {
     private static void enumerationSort(int[] arry ,int l, int r)
     {
         int maxParallelProcess = Runtime.getRuntime().availableProcessors();
+        //int maxParallelProcess = 16;
+
+        System.out.println("Parallel enumeration sort available processor:"+maxParallelProcess);
 
         if(r-l+1 < maxParallelProcess)
         {
