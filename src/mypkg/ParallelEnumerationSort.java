@@ -11,17 +11,13 @@ public class ParallelEnumerationSort {
     {
         int maxParallelProcess = Runtime.getRuntime().availableProcessors();
         //int maxParallelProcess = 16;
-
-        System.out.println("Parallel enumeration sort available processor:"+maxParallelProcess);
-
+        //System.out.println("Parallel enumeration sort available processor:"+maxParallelProcess);
         if(r-l+1 < maxParallelProcess)
         {
             SerialEnumerationSort.serialEnumerationSort(arry, l, r);
             return;
         }
-
         CountDownLatch countDownLatch = new CountDownLatch(maxParallelProcess);
-
         int partion = (r-l+1+maxParallelProcess-1)/maxParallelProcess;
         for(int i = 0; i < maxParallelProcess; i++)
         {
@@ -31,7 +27,6 @@ public class ParallelEnumerationSort {
             //System.out.println(newL + " " + newR);
             new SortThread(arry, newL, newR, countDownLatch).start();
         }
-
         try{
             countDownLatch.await();
         }
@@ -39,7 +34,6 @@ public class ParallelEnumerationSort {
         {
             e.printStackTrace();
         }
-
         int[] A = new int[r-l+1];
         for(int i = 0; i < r-l+1; i++) A[i] = arry[globalStart+i];
         for(int i = 0; i < r-l+1; i++)

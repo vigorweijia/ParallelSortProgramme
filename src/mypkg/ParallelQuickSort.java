@@ -1,30 +1,25 @@
 package mypkg;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 public class ParallelQuickSort {
 
-    private static int aliveProcess;
-
+    //System.out.println("Parallel quick sort available processors:" + Runtime.getRuntime().availableProcessors());
+    private static int[] arry;
+    private static ExecutorService executorService;
     private static final int maxParallelDepth = (int) (Math.log(Runtime.getRuntime().availableProcessors())/Math.log(2));
+    private static int depthLimit;
+    private static CountDownLatch countDownLatch;
 
-    private static void quickSort(int[] arry, int l,int r, int depthLimit, int depth)
+    private static void quickSort(int l,int r, int depth)
     {
         if(l >= r) return;
         if(depth < depthLimit)
         {
-            CountDownLatch countDownLatch = new CountDownLatch(2);
-            int mid = (l+r)/2;
-            new SortThread(arry, l, mid, depthLimit, depth+1, countDownLatch).start();
-            new SortThread(arry, mid+1, r, depthLimit, depth+1, countDownLatch).start();
-            try {
-                countDownLatch.await();
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            SerialMergeSort.merge(arry, l, r, mid);
+            int x = SerialQuickSort.partion(arry, l, r);
+            new SortAction(l, x-1, depth+1).start();
+            new SortAction(x+1, r, depth+1).start();
         }
         else
         {
@@ -32,39 +27,44 @@ public class ParallelQuickSort {
         }
     }
 
-    private static class SortThread extends Thread
+    private static class SortAction extends Thread
     {
-        private int[] arry;
         private int l;
         private int r;
-        private int depthLimit;
         private int depth;
-        private CountDownLatch countDownLatch;
 
-        public SortThread(int[] arry, int l, int r ,int depthLimit, int depth, CountDownLatch countDownLatch)
+        public SortAction(int l, int r, int depth)
         {
-            this.arry = arry;
+            super();
             this.l = l;
             this.r = r;
-            this.depthLimit = depthLimit;
             this.depth = depth;
-            this.countDownLatch = countDownLatch;
         }
 
         @Override
         public void run()
         {
-            quickSort(arry, l, r, depth, depthLimit);
+            quickSort(l, r, depth);
             countDownLatch.countDown();
         }
     }
 
-    public static void parallelQuickSort(int[] arry, int l, int r)
+    public static void parallelQuickSort(int[] array, int l, int r)
     {
-        System.out.println("Parallel quick sort available processors:" + Runtime.getRuntime().availableProcessors());
         if(maxParallelDepth >= 1)
-            quickSort(arry, l, r, maxParallelDepth, 1);
+            depthLimit = maxParallelDepth;
         else
-            quickSort(arry, l, r, 1, 1);
+            depthLimit = 1;
+        arry = array;
+        //System.out.println((new Double(Math.pow(2,maxParallelDepth)-2)).intValue());
+        countDownLatch = new CountDownLatch((new Double(Math.pow(2,maxParallelDepth)-2)).intValue());
+        quickSort(l, r,1);
+        try {
+            countDownLatch.await();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

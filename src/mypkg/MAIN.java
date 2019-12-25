@@ -1,6 +1,7 @@
 package mypkg;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
 public class MAIN {
@@ -14,6 +15,13 @@ public class MAIN {
         File file = new File(fileName);
         if(!file.exists())
         {
+            try {
+                System.out.println(MAIN.class.getResource("").toURI().getPath());
+            }
+            catch (URISyntaxException e)
+            {
+                e.printStackTrace();
+            }
             System.out.println("File not exist");
             System.exit(0);
         }
@@ -59,9 +67,14 @@ public class MAIN {
         //GenerateRandom.generateRandom(lenth);
 
         try{
-            readFromFile("src/mypkg/random.txt");
+            String filePath = MAIN.class.getResource("").toURI().getPath();
+            readFromFile(filePath + "random.txt");
         }
         catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (URISyntaxException e)
         {
             e.printStackTrace();
         }

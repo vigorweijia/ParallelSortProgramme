@@ -1,6 +1,7 @@
 package mypkg;
 
 public class SerialQuickSort {
+
     public static int partion(int[] arry, int l, int r)
     {
         int pivot = arry[r];
@@ -20,6 +21,7 @@ public class SerialQuickSort {
         arry[r] = temp;
         return j+1;
     }
+
     private static void quickSort(int[] arry, int l, int r)
     {
         if(l >= r) return;
@@ -27,6 +29,7 @@ public class SerialQuickSort {
         quickSort(arry, l, x-1);
         quickSort(arry, x+1, r);
     }
+
     public static void serialQuickSort(int[] arry, int l, int r)
     {
         quickSort(arry, l, r);
