@@ -68,6 +68,7 @@ public class MAIN {
 
         try{
             String filePath = MAIN.class.getResource("").toURI().getPath();
+            //readFromFile(filePath + "MyRandom.txt");
             readFromFile(filePath + "random.txt");
         }
         catch (FileNotFoundException e)
@@ -90,38 +91,51 @@ public class MAIN {
 
         returnBack();
         startTime = System.currentTimeMillis();
-        SerialMergeSort.serialMergeSort(nums, 0, lenth-1);
+        SerialEnumerationSort.serialEnumerationSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Serial Merge Sort: " + (endTime-startTime));
+        System.out.println("Serial Enumeration Sort: " + (endTime-startTime));
         writeToFile("order2.txt");
 
         returnBack();
         startTime = System.currentTimeMillis();
-        SerialEnumerationSort.serialEnumerationSort(nums, 0, lenth-1);
+        SerialMergeSort.serialMergeSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Serial Enumeration Sort: " + (endTime-startTime));
+        System.out.println("Serial Merge Sort: " + (endTime-startTime));
         writeToFile("order3.txt");
 
         returnBack();
         startTime = System.currentTimeMillis();
-        ParallelQuickSort.parallelQuickSort(nums, 0, lenth-1);
+        ParallelQuickSortSimpleDivide.parallelQuickSortSimpleDivide(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
-        System.out.println("Parallel Quick Sort: " + (endTime-startTime));
+        System.out.println("Parallel Quick Sort with Simple Division: " + (endTime-startTime));
         writeToFile("order4.txt");
-
-        returnBack();
-        startTime = System.currentTimeMillis();
-        ParallelMergeSort.parallelMergeSort(nums, 0, lenth-1);
-        endTime = System.currentTimeMillis();
-        System.out.println("Parallel Merge Sort: " + (endTime-startTime));
-        writeToFile("order5.txt");
 
         returnBack();
         startTime = System.currentTimeMillis();
         ParallelEnumerationSort.parallelEnumerationSort(nums, 0, lenth-1);
         endTime = System.currentTimeMillis();
         System.out.println("Parallel Enumeration Sort: " + (endTime-startTime));
+        writeToFile("order5.txt");
+
+        returnBack();
+        startTime = System.currentTimeMillis();
+        ParallelMergeSort.parallelMergeSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Merge Sort: " + (endTime-startTime));
         writeToFile("order6.txt");
 
+        /*returnBack();
+        startTime = System.currentTimeMillis();
+        ParallelMergeSortEvenDivide.parallelMergeSortEvenDivide(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Merge Sort with Even Division: " + (endTime-startTime));
+        writeToFile("order7.txt");*/
+
+        /*returnBack();
+        startTime = System.currentTimeMillis();
+        ParallelQuickSort.parallelQuickSort(nums, 0, lenth-1);
+        endTime = System.currentTimeMillis();
+        System.out.println("Parallel Quick Sort: " + (endTime-startTime));
+        writeToFile("order8.txt");*/
     }
 }
